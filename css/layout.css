@@ -1,0 +1,24 @@
+body{
+	background-color: #373E40;
+	background-image: url(../assets/header4.png);
+	background-size:100% auto; 
+	height: auto;
+}
+
+footer {
+	background-color: black;
+	position:fixed;
+	bottom:0;
+	width: 100%;
+}
+
+#legal{
+	width: 200px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.backgroundImg {
+ 	width: 100%;
+ 	height: auto;
+}
