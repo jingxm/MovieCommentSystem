@@ -1,0 +1,40 @@
+.Setting {
+	width: 35%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 8%;
+	margin-bottom: 5%;
+	padding-bottom: 2%;
+	background:rgba(255,255,255,0.3);
+}
+
+.input-group{
+	width: 33%;
+	margin: 2%;
+}
+
+.SettingTitle {
+	color: #333333;
+	text-align: center;
+}
+
+.label-blackstyle {
+	background-color: black;
+	color: #999999;
+}
+.btn-blackstyle {
+	width:20%;
+	margin-left: 15%;
+	margin-bottom: 2%;
+}
+.avatarImg {
+	margin-top: 5%;
+	width: 25%;
+}
+.avatar{
+	text-align: center;
+}
+
+.inputSpan{
+	width: 25%;
+}

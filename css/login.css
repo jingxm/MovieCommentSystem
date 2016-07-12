@@ -1,0 +1,35 @@
+.login {
+	width: 35%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 8%;
+	padding-bottom: 2%;
+	background:rgba(255,255,255,0.3);
+}
+
+.input-group{
+	width: 33%;
+	margin: 2%;
+}
+
+.loginTitle {
+	color: #333333;
+	margin-left: 16%;
+}
+
+.label-blackstyle {
+	background-color: black;
+	color: #999999;
+}
+.btn-blackstyle {
+	width:10%;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+.checkbox {
+	margin-left: 4%;
+}
+
+.inputSpan{
+	width: 25%;
+}
