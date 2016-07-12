@@ -52,3 +52,17 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return "This user is %r" % self.username
+
+#电影评论类，具有标题、内容、评分、日期的属性
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.Text)
+    content = db.Column(db.Text)
+    rating = db.Column(db.Float)
+    movie_id = db.Column(db.Integer, db.ForeignKey(Movie.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    date = db.Column(db.String(200))
+    
+    def __repr__(self):
+        return "This comment is %r" % self.title
