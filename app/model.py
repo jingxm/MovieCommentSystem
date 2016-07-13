@@ -93,16 +93,3 @@ class Comment(db.Model):
     #返回此评论的评分
     def percentige(self):
         return self.rating*10
-
-''' #帖子的类
-class Post(db.Model):
-    __tablename__ = "posts"
-    id = db.Column(db.Integer, primary_key = True)
-    title = db.Column(db.Text)
-    content = db.Column(db.Text)
-    movie_id = db.Column(db.Integer, db.ForeignKey(Movie.id))
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-    date = db.Column(db.DateTime)
-    def __repr__(self):
-        return "This post is %r" % self.title
-'''
