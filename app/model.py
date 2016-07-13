@@ -4,8 +4,8 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import sys
 
-#电影类，具有的属性包括电影名字、导演、简介、演员、图片、上映日期、豆瓣评分
-
+#电影类，具有的属性包括电影名字、导演、简介、演员、图片、上映日期、豆瓣评分、烂番茄评分、IMDb评分
+#其中每个电影会与若干个评论相关
 class Movie(db.Model):
     __searchable__ = ['name', 'actor', 'director']
     __tablename__ = "movies"
@@ -18,7 +18,17 @@ class Movie(db.Model):
     date = db.Column(db.String(200))
     url = db.Column(db.String(200))
     rating = db.Column(db.Float)
-    
+    imdb_rating = db.Column(db.Float)
+    tomato_rating = db.Column(db.Integer)
+    imdb_url = db.Column(db.String(200))
+    comment = db.relationship('Comment', backref="Movie", lazy="dynamic")
+
+    #如果不存在烂番茄评分，返回-1.存在则返回评分以及百分比符号
+    def ret_tomato(self):
+        if self.tomato_rating == -1:
+            return -1
+        else:
+            return str(self.tomato_rating)+'%'
     def __repr__(self):
         return "This movie is %r" % self.name
 
