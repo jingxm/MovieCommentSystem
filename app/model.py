@@ -32,7 +32,7 @@ class Movie(db.Model):
     def __repr__(self):
         return "This movie is %r" % self.name
 
-#用户类，包括用户名、密码、邮箱、电话
+#用户类，包括用户名、密码、邮箱、电话、评论，其中每名用户会有若干评论。
 class User(db.Model, UserMixin):
     __tablename__ = "Users"
     id = db.Column(db.Integer, primary_key = True)
@@ -64,7 +64,7 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return "This user is %r" % self.username
 
-#电影评论类，具有标题、内容、评分、日期的属性
+#电影评论类，具有标题、内容、评分、日期的属性，每个评论关联用户、电影。
 class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key = True)
@@ -93,3 +93,17 @@ class Comment(db.Model):
     #返回此评论的评分
     def percentige(self):
         return self.rating*10
+
+'''
+#帖子类，待用
+class Post(db.Model):
+    __tablename__ = "posts"
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.Text)
+    content = db.Column(db.Text)
+    movie_id = db.Column(db.Integer, db.ForeignKey(Movie.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    date = db.Column(db.DateTime)
+    def __repr__(self):
+        return "This post is %r" % self.title
+'''
