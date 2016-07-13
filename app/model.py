@@ -40,6 +40,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(200))
     email = db.Column(db.String(200))
     phone = db.Column(db.String(100))
+    comment = db.relationship('Comment', backref="User", lazy="dynamic")
 
     #注册callback，借此登录用户
     @login_manager.user_loader
@@ -76,3 +77,19 @@ class Comment(db.Model):
     
     def __repr__(self):
         return "This comment is %r" % self.title
+
+    #返回此评论的用户名称
+    def to_user(self):
+        return self.User.username
+
+    #返回此评论关联的电影名称
+    def to_movie(self):
+        return self.Movie.name
+
+    #返回评论你关联的电影海报
+    def to_image(self):
+        return self.Movie.image
+
+    #返回此评论的评分
+    def percentige(self):
+        return self.rating*10
