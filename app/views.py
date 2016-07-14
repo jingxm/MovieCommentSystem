@@ -122,3 +122,31 @@ def Search():
     else:
         flash("请输入名称")
         return redirect(url_for('Home'))
+
+#对所有访客可见
+@app.route('/Information/<name>', methods=["POST", "GET"])
+def Information(name):
+    movie = Movie.query.filter_by(name=name).first()
+    if request.method == 'GET':
+        comment_list = Comment.query.filter_by(movie_id=movie.id).all()
+        form = CommentForm()
+        return render_template('MovieInfo.html', form=form, movie=movie, comment_list=comment_list)
+
+    if request.method == "POST":
+    #发表评论
+        if current_user.is_authenticated:
+            form = CommentForm()
+            if form.validate_on_submit():
+                comment = Comment(date=datetime.date.today(), title=form.title.data, content=form.content.data,
+                                  rating=form.rating.data, user_id=current_user.id, movie_id=movie.id)
+                db.session.add(comment)
+                db.session.commit()
+                flash("评论发表成功")
+                print "success"
+            comment_list = Comment.query.filter_by(movie_id=movie.id).all()
+            #if comment_list and flag:
+            render_template('MovieInfo.html', form=form, movie=movie, comment_list=comment_list)
+            return redirect(url_for('Information', name=movie.name))
+        else:
+            flash("请登录后发表评论")
+            return redirect(url_for('Information', name=movie.name))
