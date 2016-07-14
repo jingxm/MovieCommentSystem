@@ -72,3 +72,27 @@ def Home(page = 1):
     # = Movie.query.order_by('id').all()
     movie_list = Movie.query.order_by('id').paginate(page, 4, False)
     return render_template('MovieList.html', movie_list=movie_list)
+
+# 对所有访客可见,用户注册，成功会跳转至主页面，否则回到本页面
+@app.route('/Regist',methods=['POST','GET'])
+def Regist():
+    form = RegisterForm()
+    if request.method == "GET":
+        return render_template("Regist.html", form=form)
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            if User.query.filter_by(username=form.username.data).first():
+                flash('此用户名已被占用,请更换用户名注册')
+                return redirect(url_for('Regist'))
+            else:
+                user = User(username=form.username.data,password=form.password2.data,
+                            email=form.email.data,phone=form.phone.data)
+                db.session.add(user)
+                db.session.commit()
+                flash('注册成功,跳转至主页')
+                login_user(user)
+                return redirect(url_for('Home'))
+        else:
+            flash("请检查是否输入全部内容、邮箱格式以及两个密码是否一致")
+        return render_template('Regist.html',form=form)
