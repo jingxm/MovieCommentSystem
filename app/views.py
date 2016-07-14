@@ -96,3 +96,29 @@ def Regist():
         else:
             flash("请检查是否输入全部内容、邮箱格式以及两个密码是否一致")
         return render_template('Regist.html',form=form)
+
+# 对所有访客可见，查询界面
+@app.route('/Search', methods=['POST','GET'])
+def Search():
+    name = request.args.get('q')
+    if name:
+        #根据输入是中文还是英文进行不同处理
+        if ord(name[0]) > 127:
+            get_resources_url = 'http://api.douban.com/v2/movie/search?q=%s' % name
+            url_respond = json.loads(urlopen(get_resources_url).read().decode('utf-8'))
+
+            movie_id = url_respond['subjects'][0]['id']
+            resources_url = 'https://api.douban.com/v2/movie/%s' % movie_id
+            movie = Movie.query.filter_by(url=resources_url).paginate(1, 4, False)
+        else:
+            print name
+            movie = Movie.query.filter(Movie.name.like(name)).paginate(1, 4, False)
+
+        if movie.items:
+            return render_template('MovieList.html', movie_list=movie)
+        else:
+            flash('该电影不存在，请检查电影名称或本站尚未收录')
+            return redirect(url_for('Home'))
+    else:
+        flash("请输入名称")
+        return redirect(url_for('Home'))
