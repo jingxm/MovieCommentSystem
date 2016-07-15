@@ -1,30 +1,27 @@
+<!DOCTYPE html>
 {% extends "Layout.html" %}
-{% block page_title%}
-个人设置
+
+{% block page_title %}
+注册
 {% endblock %}
 
 {% block page_css %}
-<link href="/static/css/PersonalSetting.css" rel="stylesheet">
+  <link href="/static/css/regist.css" rel="stylesheet">
 {% endblock %}
 
-
 {% block content %}
-    <div class="Setting">
-      <div class="avatar">
-        <img src="/static/assets/avatar.png" alt="avatar" class="img-circle avatarImg">
-      </div>
-      <div class="SettingTitle">
-        <h2><b>个人设置</b></h2>
-      </div>
+<form class="form" action="/Regist" method="post" name="regist">
+    {{ form.hidden_tag() }}
+    <div class="regist">
       <div class="container">
-        <form class="form-Setting" action="" method="post">
-          {{ form.hidden_tag()}}
+          <h2 class="loginTitle"><b>注册</b></h2>
+          </hr>
           <div class="input-group">
-              <span class="input-group-addon label-blackstyle inputSpan" id="basic-addon1">原始密码</span>
-              <input type="text" class="form-control" placeholder="Originalpassword" aria-describedby="basic-addon1" name="old_password">
+            <span class="input-group-addon label-blackstyle inputSpan" id="basic-addon1">用户名</span>
+            <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" name="username">
           </div>
           <div class="input-group">
-            <span class="input-group-addon label-blackstyle inputSpan" id="basic-addon2">新密码</span>
+            <span class="input-group-addon label-blackstyle inputSpan" id="basic-addon2">密码</span>
             <input type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2" name="password1">
           </div>
           <div class="input-group" id="signup-part1">
@@ -39,10 +36,12 @@
             <span class="input-group-addon label-blackstyle inputSpan" id="basic-addon5">手机号</span>
             <input type="text" class="form-control" placeholder="Tel number" aria-describedby="basic-addon5" name="phone">
           </div>
-          <div class="btn-blackstyle">
-            <button class="btn btn-lg label-blackstyle" type="submit" id="submit-signup">确认保存</button>
-          </div>
-        </form>
+          <button class="btn btn-lg label-blackstyle btn-blackstyle" type="submit" id="submit-signup">注册</button>
+          <a href="{{ url_for('Login') }}">
+          <button class="btn btn-lg label-blackstyle btn-blackstyle" type="button" id="submit-login">登录</button>
+          </a>
+
       </div>
     </div>
+</form>
 {% endblock %}
