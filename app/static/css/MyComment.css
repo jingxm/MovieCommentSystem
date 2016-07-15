@@ -29,3 +29,24 @@
 hr {
 	width: 78%;
 }
+.vote-star{
+    display:inline-block;/*内联元素转换成块元素，并不换行 weisay.com*/
+    margin-left:-1px;
+    margin-bottom: 8px;
+    width:85px;/*5个星星的宽度 weisay.com*/
+    height:17px;/*1个星星的高度 weisay.com*/
+    overflow:hidden;
+    vertical-align:middle;
+    background:url(/static/assets/star.gif) repeat-x 0 -17px;}
+.vote-star i{
+    display:inline-block;/*内联元素转换成块元素，并不换行 weisay.com*/
+    height:17px;/*1个星星的高度 weisay.com*/
+    background:url(/static/assets/star.gif) repeat-x 0 0;
+    width: 50;
+}
+.page {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1%;
+}

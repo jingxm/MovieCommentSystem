@@ -7,7 +7,7 @@ body{
 
 footer {
 	background-color: black;
-	position:fixed;
+	position: fixed;
 	bottom:0;
 	width: 100%;
 }
@@ -21,4 +21,8 @@ footer {
 .backgroundImg {
  	width: 100%;
  	height: auto;
+}
+.message {
+	width: 100%;
+	margin-top: 4%;
 }

@@ -3,9 +3,10 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 8%;
+	margin-bottom: 5%;
 	background:rgba(255,255,255,0.4);
 }
- 
+
 .listTitle {
 	padding-top: 3%;
 	color: #333333;
@@ -20,6 +21,7 @@
 
 .movieImg {
 	width: 100%;
+	margin-top: 9%;
 }
 
 .moviePage{
@@ -28,4 +30,15 @@
 	width: 25%;
 	margin-right: auto;
 	margin-left: auto;
+}
+
+.modifyButton{
+	float: right;
+	margin-top: 5%;
+}
+.page {
+	width: 30%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 3%;
 }
