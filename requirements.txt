@@ -1,0 +1,11 @@
+flask
+flask_login
+flask_sqlalchemy
+flask_admin
+flask_migrate
+flask_paginate
+werkzeug
+wtforms
+flask_wtf
+beautifulsoup4
+functools
