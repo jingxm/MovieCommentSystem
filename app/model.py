@@ -25,8 +25,8 @@ class Movie(db.Model):
 
     #如果不存在烂番茄评分，返回-1.存在则返回评分以及百分比符号
     def ret_tomato(self):
-        if self.tomato_rating == -1:
-            return -1
+        if self.tomato_rating == "N/A":
+            return "无记录"
         else:
             return str(self.tomato_rating)+'%'
     def __repr__(self):
@@ -95,7 +95,7 @@ class Comment(db.Model):
         return self.rating*10
 
 '''
-#帖子类，待用
+帖子类，备用
 class Post(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key = True)
