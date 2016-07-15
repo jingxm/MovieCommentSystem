@@ -150,3 +150,9 @@ def Information(name):
         else:
             flash("请登录后发表评论")
             return redirect(url_for('Information', name=movie.name))
+
+@app.route('/MyComment/<int:page>', methods=["POST", "GET"])
+@login_required
+def MyComment(page = 1):
+    comment = Comment.query.filter_by(user_id=current_user.id).paginate(page, 5, False)
+    return render_template('MyComment.html', comment_list=comment)
