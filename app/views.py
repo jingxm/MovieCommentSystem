@@ -211,3 +211,30 @@ def ModifyMovie(name):
     else:
         flash("你没有权限访问")
         return redirect(url_for("Home"))
+
+@app.route('/PersonalSetting', methods=["POST", "GET"])
+@login_required
+def PersonalSetting():
+    form = SettingForm()
+    print form.phone.data
+    if request.method=="POST":
+        if form:
+            #修改密码
+            if form.old_password.data and form.password1.data and form.password2.data:
+                if current_user.password_verification(form.old_password.data) and form.password2.data:
+                    current_user.password_hash = generate_password_hash(form.password2.data)
+                    db.session.commit()
+                else :
+                    flash('与原密码不匹配，无法修改')
+            #修改邮箱地址
+            if form.email.data:
+                current_user.email = form.email.data
+                db.session.commit()
+            #修改电话号码
+            if form.phone.data:
+                current_user.phone = form.phone.data
+                db.session.commit()
+            flash('修改成功')
+        return redirect(url_for("Home"))
+    else:
+        return render_template('PersonalSetting.html', form=form)
