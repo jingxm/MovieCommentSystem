@@ -238,3 +238,78 @@ def PersonalSetting():
         return redirect(url_for("Home"))
     else:
         return render_template('PersonalSetting.html', form=form)
+
+@app.route('/AddMovie', methods=['POST','GET'])
+@login_required
+def AddMovie():
+    if current_user.id == 1:
+        form = MovieForm()
+        if form.validate_on_submit():
+            name = form.name.data
+            get_resources_url = 'http://api.douban.com/v2/movie/search?q=%s' % name
+            url_respond = json.loads(urlopen(get_resources_url).read().decode('utf-8'))
+
+            movie_id = url_respond['subjects'][0]['id']
+            resources_url = 'https://api.douban.com/v2/movie/%s' % movie_id
+
+
+            temp = Movie.query.filter_by(url=resources_url).first()
+
+            if temp:
+                flash('该电影已经在数据库中')
+            else:
+                #解析获得该电影在豆瓣页面上的imdb码，随后进行判断
+                subject_url = 'https://movie.douban.com/subject/%s' % movie_id
+                subject_response = requests.get(subject_url)
+                soup = BeautifulSoup(subject_response.text.encode('utf-8'))
+
+                ima_json = json.loads(urlopen('https://api.douban.com/v2/movie/subject/%s' % movie_id).read().decode('utf-8'))
+                ima = ima_json['images'].get('large')
+                content_respond = json.loads(urlopen(resources_url).read().decode('utf-8'))
+                
+                director_temp = ""
+                actor_temp = ""
+                if content_respond['attrs'].get('director'):
+                    for tep in content_respond['attrs'].get('director'):
+                        if director_temp == "":
+                            director_temp+=tep
+                        else:
+                            director_temp=director_temp+','+tep
+                if content_respond['attrs'].get('cast'):
+                    for tep in content_respond['attrs'].get('cast'):
+                        if actor_temp == "":
+                            actor_temp+=tep
+                        else:
+                            actor_temp=actor_temp+','+tep
+
+                #对该电影是否具有imdb码进行判断
+                if len(soup.find_all(href=re.compile("imdb"))) > 0:
+                    imdb_id = soup.find_all(href=re.compile("imdb"))[0].string
+                    get_imdb_url = 'http://www.omdbapi.com/?i=%s&plot=short&r=json&tomatoes=true' % imdb_id
+                    imdb_url_respond = json.loads(urlopen(get_imdb_url).read().decode('utf-8'))
+                    if imdb_url_respond['tomatoMeter']:
+                        tomato_rating_temp = imdb_url_respond['tomatoMeter']
+                    else:
+                        tomato_rating_temp = -1
+
+                    movie = Movie(url=resources_url,name=content_respond['title'],
+                                  director=director_temp, summary=content_respond['summary'],
+                                  actor=actor_temp,rating=content_respond['rating'].get('average'),
+                                  image=ima, date=content_respond['attrs'].get('pubdate')[0],
+                                  comment='',imdb_rating=imdb_url_respond['imdbRating'],
+                                  tomato_rating=tomato_rating_temp, imdb_url=imdb_id)
+                else:
+                    movie = Movie(url=resources_url,name=content_respond['title'],
+                                  director=director_temp, summary=content_respond['summary'],
+                                  actor=actor_temp,rating=content_respond['rating'].get('average'),
+                                  image=ima, date=content_respond['attrs'].get('pubdate')[0],
+                                  comment='',imdb_rating=-1,imdb_url=None,
+                                  tomato_rating=-1)
+                db.session.add(movie)
+                db.session.commit()
+                flash('新电影信息已经添加')
+                return render_template('AddMovie.html',form=form, movie=movie)
+        return render_template('AddMovie.html',form=form, movie=None)
+    else:
+        flash('你没有管理权限')
+        return redirect(url_for('Home'))
