@@ -156,3 +156,23 @@ def Information(name):
 def MyComment(page = 1):
     comment = Comment.query.filter_by(user_id=current_user.id).paginate(page, 5, False)
     return render_template('MyComment.html', comment_list=comment)
+
+@app.route('/ModifyComment/<comment_id>', methods=["POST", "GET"])
+@login_required
+def ModifyComment(comment_id):
+    comment = Comment.query.filter_by(id=comment_id).first()
+    form = ChangeCommentForm()
+    if request.method == "POST":
+
+        if form.validate_on_submit():
+            comment.title = form.title.data
+            comment.content = form.content.data
+            comment.rating = form.rating.data
+            db.session.commit()
+            flash("保存成功")
+            return redirect(url_for("MyComment", page=1))
+        else:
+            flash("请输入评论内容")
+            return redirect(url_for("ModifyComment", comment_id=comment_id))
+    if request.method == "GET":
+        return render_template('ModifyComment.html', form=form, comment=comment)
