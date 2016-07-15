@@ -176,3 +176,38 @@ def ModifyComment(comment_id):
             return redirect(url_for("ModifyComment", comment_id=comment_id))
     if request.method == "GET":
         return render_template('ModifyComment.html', form=form, comment=comment)
+
+@app.route('/ModifyMovie/<name>', methods=["POST", "GET"])
+@login_required
+def ModifyMovie(name):
+    if current_user.id == 1:
+        movie=Movie.query.filter_by(name=name).first()
+        form = ChangeMovieForm()
+        if request.method == "GET":
+            return render_template("ModifyMovie.html", movie=movie, form=form)
+
+        if request.method == "POST":
+            if form:
+                if form.name.data:
+                    movie.name = form.name.data
+                    db.session.commit()
+                if form.director.data:
+                    movie.director = form.director.data
+                    db.session.commit()
+                if form.summary.data:
+                    movie.summary = form.summary.data
+                    db.session.commit()
+                if form.date.data:
+                    movie.date = form.date.data
+                    db.session.commit()
+                if form.actor.data:
+                    movie.actor = form.actor.data
+                    db.session.commit()
+                flash('修改成功')
+                return redirect(url_for("Home"))
+            else:
+                flash('请输入全部信息')
+            return render_template('ModifyMovie.html', form=form, movie=movie)
+    else:
+        flash("你没有权限访问")
+        return redirect(url_for("Home"))
