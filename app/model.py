@@ -29,6 +29,13 @@ class Movie(db.Model):
             return "无记录"
         else:
             return str(self.tomato_rating)+'%'
+
+    def ret_imdb(self):
+        if self.imdb_rating == 0:
+            return "无记录"
+        else:
+            return self.imdb_rating
+            
     def __repr__(self):
         return "This movie is %r" % self.name
 
