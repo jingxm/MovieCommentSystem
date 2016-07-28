@@ -9,3 +9,4 @@ wtforms
 flask_wtf
 beautifulsoup4
 functools
+requests
